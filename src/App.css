@@ -85,9 +85,18 @@ h1 {
 #cleanAllBtn:hover {
     background-color: #d35400;
 }
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
 .task-list {
     list-style: none;
     margin-bottom: 25px;
+}
+.task-text.completed {
+    text-decoration: line-through; /* 删除线 */
+    opacity: 0.7;  /* 透明度 */
 }
 .task-item {
     display: flex;
