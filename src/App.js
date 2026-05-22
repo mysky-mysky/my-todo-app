@@ -3,7 +3,6 @@ import './App.css';
 import TodoItem from './TodoItem.js';
 import TodoInput from './TodoInput.js';
 
-// 该周五了
 function App() {
 
     // 加载数据:页面初始化时从local storage读取
