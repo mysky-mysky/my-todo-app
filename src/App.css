@@ -85,6 +85,17 @@ h1 {
 #cleanAllBtn:hover {
     background-color: #d35400;
 }
+.filter-buttons button.active {
+    background-color: #2c3e50;
+    color: white;
+}
+.catetgory-badge {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background-color: #e0e0e0;
+    margin-left: 8px;
+}
 .empty-state {
     text-align: center;
     padding: 40px;
@@ -172,4 +183,27 @@ h1 {
     .input-row {width: 100%;}
     .button-group {width: 100%;}
     #addBtn, #loadBtn {flex: 1; padding: 12px 0;}
+}
+/*进度条容器*/
+.progress-section {
+    margin: 20px 0;
+}
+.progress-bar {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    height: 10px;
+    overflow: hidden;
+}
+.progress-fill {
+    background-color: #4caf50;
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+.progress-text {
+    text-align:center;
+    font-size: 12px;
+    margin-top: 5px;
+    color: #666;
 }
