@@ -49,37 +49,30 @@ todo-backend/ # 后端 Node.js 服务
 ## 本地运行
 
 ### 1. 克隆仓库
-
-```bash
 git clone https://github.com/mysky-mysky/my-todo-app.git
 cd my-todo-app
 ### 2. 安装前端依赖并启动
-bash
 cd my-todo-app
 npm install
 npm start
 前端默认运行在 http://localhost:3000
-
 ### 3. 安装后端依赖
-bash
 cd ../todo-backend
 npm install
 ### 4. 配置环境变量
 在 todo-backend 目录下创建 .env 文件：
-
 env
 MONGO_URI=你的MongoDB连接字符串
 PORT=5000
 ### 5. 启动后端服务
-bash
 npm run dev
 后端默认运行在 http://localhost:5000
 
-在线预览
+## 在线预览
 （部署完成后补充链接）
 
-作者
+## 作者
 mysky-mysky
 
-许可证
+## 许可证
 MIT
