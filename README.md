@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+# React 全栈待办应用
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个功能完整的全栈待办事项管理应用，支持任务的增删改查、分类管理、进度统计。
 
-## Available Scripts
+数据存储在 MongoDB Atlas，前端通过 Axios 调用后端 RESTful API。
 
-In the project directory, you can run:
+## 功能清单
 
-### `npm start`
+- ✅ 添加任务（支持分类：工作 / 个人 / 学习）
+- ✅ 删除任务
+- ✅ 编辑任务（双击文字修改）
+- ✅ 切换完成状态
+- ✅ 按分类筛选（全部 / 工作 / 个人 / 学习）
+- ✅ 清除所有已完成任务（带二次确认）
+- ✅ 数据持久化（MongoDB 数据库）
+- ✅ 进度条可视化
+- ✅ 统计数据（总数 / 已完成 / 百分比）
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 技术栈
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 前端
+- React 18（函数组件 + Hooks）
+- Axios（HTTP 请求）
+- 原生 CSS（Flex 布局 + 响应式）
 
-### `npm test`
+### 后端
+- Node.js + Express
+- MongoDB + Mongoose
+- RESTful API 设计
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 数据库
+- MongoDB Atlas（云端存储）
 
-### `npm run build`
+## 项目结构
+my-todo-app/ # 前端 React 应用
+├── src/
+│ ├── App.js # 主组件，管理状态和逻辑
+│ ├── App.css # 全局样式
+│ ├── TodoInput.js # 输入组件
+│ └── TodoItem.js # 任务项组件
+└── package.json
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+todo-backend/ # 后端 Node.js 服务
+├── index.js # 入口文件，定义 API 路由
+├── models/
+│ └── Task.js # 任务数据模型
+└── package.json
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 本地运行
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. 克隆仓库
 
-### `npm run eject`
+```bash
+git clone https://github.com/mysky-mysky/my-todo-app.git
+cd my-todo-app
+2. 安装前端依赖并启动
+bash
+cd my-todo-app
+npm install
+npm start
+前端默认运行在 http://localhost:3000
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. 安装后端依赖
+bash
+cd ../todo-backend
+npm install
+4. 配置环境变量
+在 todo-backend 目录下创建 .env 文件：
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+env
+MONGO_URI=你的MongoDB连接字符串
+PORT=5000
+5. 启动后端服务
+bash
+npm run dev
+后端默认运行在 http://localhost:5000
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+在线预览
+（部署完成后补充链接）
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+作者
+mysky-mysky
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+许可证
+MIT
