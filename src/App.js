@@ -1,71 +1,68 @@
 import { useState, useEffect} from 'react';
+import axios from 'axios';  //前端调接口
 import './App.css';
 import TodoItem from './TodoItem.js';
 import TodoInput from './TodoInput.js';
 
+const API_URL = 'https://todo-backend-n6z6.onrender.com/tasks';
+
 function App() {  //作用:管理所有状态和逻辑,如果没有会直接报错
 
-    // 加载数据:页面初始化,作用:存储所有待办事项,如果没有页面显示空白
-    const [tasks, setTasks] = useState(() => {
-        const saved = localStorage.getItem('tasks');  //从本地读取数组
-        if (saved) {  //如有
-            return JSON.parse(saved);  //就转为json
-        }
-        return [  //如没有,就用下面数组
-            {id: 1, text: '学习 React', completed: false, category: '学习'},
-            {id: 2, text: '写周报', completed: true, category: '工作'},
-            {id: 3, text: '买菜', completed: false, category: '个人'},
-        ];
-    });
-
-    // 添加输入筛选状态(如果没有,添加时就无法筛选)
+    const [tasks, setTasks] = useState([]);
     const [filter, setFilter] = useState('全部');
 
-    // 保存数据:监听tasks,自动保存到localstorage.如果没有,刷新页面数据丢失
-    useEffect(() => {  // 将数组tasks转为json字符串后,存到本地,名字叫'tasks'
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }, [tasks]);  // 当监听到变量tasks变化时, 执行以上函数
+    // 加载数据:从后端读取(拿到就存,拿不到报错)
+    useEffect(() => {  // 使用副作用(组件渲染后的额外操作)
+        axios.get(API_URL)  //axios去后端API_URL获取数据
+            .then(res => setTasks(res.data))  //如果成功,就将取到的对象res里的data setTasks成新的tasks
+            .catch(err => console.error('加载任务失败:', err))  //如果失败,在控制台显示错误信息
+    }, []);  //只在首次加载时执行
 
-    // 添加新任务(如果没有,无法添加新任务)
-    function addTask(text, selectedCategory) {
+    // 添加新任务
+    function addTask(text, category) {
         if (text.trim() === '') return;  //如果输入框是空的,退出函数(不添加)
-        const newTask = {  // 创建新任务
-            id: Date.now(),  //Data是js的内置对象(当前时间的毫秒数)，直接用
-            text: text,
-            completed: false,  //刚开始默认未完成
-            category: selectedCategory,  //将分类改为外部接受的selectedCategory
-        };
-        setTasks([...tasks, newTask]);  // 添加到原列表后
+        axios.post(API_URL, {text, category})  //(如有内容)axios库向API_URL添加text和category,服务器会有反应:返回个对象
+            .then(res => setTasks(prev => [...prev, res.data]))  //如果返回的是成功对象,将相应对象做数组处理:将旧数组拿出来展开,将新数组追加到后面
+            .catch(err => console.error('添加失败', err))  //如果返回的是失败对象,就执行失败对象:显示失败信息
     }
 
-    // 定义删除函数,如果没有,就无法删除任务
+    // 删除任务
     function deleteTask(id) {
-        setTasks(tasks.filter(task => task.id !== id));  // 保留...(条件:不匹配的id)
+        console.log('删除任务，id =', id);
+        axios.delete(`${API_URL}/${id}`)  //axios库向后端链接的id发送删除请求,服务器会有反应:返回个对象
+            .then(() => setTasks(prev => prev.filter(task => task._id !== id)))  //如果返回的是成功对象,就更新tasks:拿出旧数组,过滤(保留)不等于id的数组
+            .catch(err => console.error('删除失败', err))  //如果返回的是失败对象,就显示失败信息
+    }
+
+    // 切换完成状态
+    function toggleTask(id) {
+        const task = tasks.find(t => t._id === id)  //遍历tasks,找到和id一样的t,赋值给task
+        if (!task) return;  //如果task没东西(没找到),就退出
+        axios.put(`${API_URL}/${id}`, {completed: !task.completed})  //(如果找到了)axios库向那个地址的id发送切换请求,将完成状态反转,服务器会有反应:返回个对象
+            .then(res => setTasks(prev => prev.map(t => t._id === id ? res.data : t)))  //如果返回的是成功对象,执行响应对象(更改数组):拿出旧数据遍历,如果是那个id就改为对象的数据,其他不变
+            .catch(err => console.error('更新失败', err))  //如果返回的是失败对象,就展示错误信息
+        }
+    
+    //定义编辑文字的函数,接收参数:id和新文字
+    function editTask(id, newText) {  
+        axios.put(`${API_URL}/${id}`, {text: newText})  //axios库向服务器的API_URL的id发送请求,改为newtext,服务器会有反应:返回个对象
+            .then(res => setTasks(prev => prev.map(t => t._id === id ? res.data : t))) //如果返回的是成功对象,就执行set函数:拿出旧数据,遍历每个数据,如果这个数据t的id是要更换的id,就换成返回的对象的数据,否则不变
+            .catch(err => (console.error('编辑失败:', err)));  //如果返回的是失败对象,就显示编辑失败,并告之原因
     }
 
     //清除已完成任务
     function clearCompleted() {
-        const hasCompleted = tasks.some(task => task.completed)  //至少有一个已完成
-        if (!hasCompleted) {  //如果没有已完成(取反任一已完成,就是一个也没有完成)
-            alert('没有已完成的任务');
-            return;
-        }
-        if (window.confirm('确定要删除所有已完成的任务吗?')) {  //(有删除和取消按钮)
-            setTasks(tasks.filter(task => !task.completed));  //过滤(保留)未完成的
-        }
+        const completedIds = tasks.filter(t => t.completed).map(t => t._id);  //遍历数组tasks,找出已完成的,再取其id,存到常量completedIds里
+        if (completedIds.length === 0) {  //如果已完成的id数量长度为0
+            alert('没有已完成的任务');  //弹窗提示:没有已完成的任务
+            return;  //紧接着退出(不执行后面的代码)
+        };
+        if (!window.confirm('确定删除所有已完成的任务吗?')) return;  //如果浏览器弹出"问题",用户点击了否(用!表示),就退出程序(不执行后面的代码)
+        const deletePromises = completedIds.map(id => axios.delete(`${API_URL}/${id}`));  //遍历需要删除的id,axios对每个id发送删除请求,将删除请求放到一个常量里
+        Promise.all(deletePromises)  //待deletePromises全部完成
+            .then(() => setTasks(prev => prev.filter(t => !t.completed)))  //如果删除请求都成功,就调用setTasks更新任务列表:拿出旧列表,筛选出没有完成的项
+            .catch(err => console.error('批量删除失败:',err));  //如果删除请求失败接收错误对象,就在控制台显示错误信息,并告知原因
     }
-
-    // 定义切换完成状态函数,如果没有:已完成和未完成无法来回切换
-    function toggleTask(id) {
-        setTasks(tasks.map(task =>  //用setTasks修改tasks，执行：用map遍历task
-        task.id === id ? {...task, completed: !task.completed} : task
-        ));  //如果一样，就将完成的状态task.completed取反，否组不变还是task
-    }
-
-    function editTask(id, newText) {  //定义一个编辑任务的函数
-        setTasks(tasks.map(task => task.id === id ? {...task, text:newText } : task))
-    }  //对数组进行设置:遍历数组,如果是当前id,就将旧的text将替换掉,如果不是就不变
-
 
     let filteredTasks = tasks;  //先把原始数组赋值给名叫'筛选后的数组'的变量(默认显示全部分类)
     if (filter !== '全部') {  // 如果不是全部(言外之意：有筛选)
@@ -85,7 +82,7 @@ function App() {  //作用:管理所有状态和逻辑,如果没有会直接报�
         <div className="todo-app">
             <h1>待办事项</h1>
             {/*插入TodoInput组件:属性是onAdd函数,将接收的2个参数传递给addTask*/}
-            <TodoInput onAdd={(text, category) => addTask(text, category)} /> 
+            <TodoInput onAdd={addTask} /> 
 
             {tasks.length === 0 ? (  // 如果数组长度是0的话(即没有任何数据)
                 <div className="empty-state">暂无任务，添加一条吧</div> //calssName不参与交互
@@ -95,10 +92,10 @@ function App() {  //作用:管理所有状态和逻辑,如果没有会直接报�
                 <ul className="task-list">
                     {filteredTasks.map(task => (
                         <TodoItem 
-                            key={task.id}  //react强烈建议加上,用来定位到这里
+                            key={task._id}  //react强烈建议加上,用来定位到这里
                             task={task}
-                            onToggle={() => toggleTask(task.id)}
-                            onDelete={() => deleteTask(task.id)}
+                            onToggle={() => toggleTask(task._id)}
+                            onDelete={() => deleteTask(task._id)}
                             onEdit={editTask}
                         />
                     ))}
@@ -108,28 +105,32 @@ function App() {  //作用:管理所有状态和逻辑,如果没有会直接报�
             {/* 添加显示按钮:判断filter是哪个类,如果是工作,就让css显示工作,其他为空,在执行onclick时:
             setFilter触发了重新渲染,在  const[filter, setFilter]=useState('全部')  找到了filter,
             又在  if(filter !== '全部')  找到了该怎么做(即显示工作类别) */}
-            <button
-                onClick={() => setFilter('全部')}
-                className={filter === '全部' ? 'active' : ''}
-            >全部({totalCount})</button>
-            <button 
-                onClick={() => setFilter('工作')}
-                className={filter === '工作' ? 'active' : ''} 
-            >工作({workCount})</button>
-            <button
-                onClick={() => setFilter('个人')}
-                className={filter === '个人' ? 'active' : ''}
-            >个人({personalCount})</button>
-            <button
-                onClick={() => setFilter('学习')}
-                className={filter === '学习' ? 'active' : ''}
-            >学习({studyCount})</button>
+            
+            <div className='filter-buttons'>
+                <button
+                    onClick={() => setFilter('全部')}
+                    className={filter === '全部' ? 'active' : ''}
+                >全部({totalCount})</button>
+                <button 
+                    onClick={() => setFilter('工作')}
+                    className={filter === '工作' ? 'active' : ''} 
+                >工作({workCount})</button>
+                <button
+                    onClick={() => setFilter('个人')}
+                    className={filter === '个人' ? 'active' : ''}
+                >个人({personalCount})</button>
+                <button
+                    onClick={() => setFilter('学习')}
+                    className={filter === '学习' ? 'active' : ''}
+                >学习({studyCount})</button>
 
-            <button onClick={clearCompleted} style={{marginLeft:'20px', 
-                backgroundColor:'#e74c3c', cloor:'white', border:'none',
-                padding:'8px 16px', borderRadius:'8px', cursor:'pointer'}}>
-                清除已完成
-            </button>
+                <button onClick={clearCompleted} style={{marginLeft:'20px', 
+                    backgroundColor:'#e74c3c', cloor:'white', border:'none',
+                    padding:'8px 16px', borderRadius:'8px', cursor:'pointer'}}>
+                    清除已完成
+                </button>
+            </div>
+
 
             {/*进度条*/}
             <div className="progress-section">  {/*进度部分*/}
