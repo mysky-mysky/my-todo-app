@@ -69,7 +69,8 @@ npm run dev
 后端默认运行在 http://localhost:5000
 
 ## 在线预览
-（部署完成后补充链接）
+- 前端：https://my-todo-app-eosin-eight.vercel.app
+- 后端 API：https://todo-backend-n6z6.onrender.com/tasks
 
 ## 作者
 mysky-mysky
