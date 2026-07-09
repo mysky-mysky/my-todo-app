@@ -19,9 +19,9 @@ function App() {  //作用:管理所有状态和逻辑,如果没有会直接报�
     }, []);  //只在首次加载时执行
 
     // 添加新任务
-    function addTask(text, category) {
+    function addTask(text, category, priority) {
         if (text.trim() === '') return;  //如果输入框是空的,退出函数(不添加)
-        axios.post(API_URL, {text, category})  //(如有内容)axios库向API_URL添加text和category,服务器会有反应:返回个对象
+        axios.post(API_URL, {text, category, priority})  //(如有内容)axios库向API_URL添加text和category,服务器会有反应:返回个对象
             .then(res => setTasks(prev => [...prev, res.data]))  //如果返回的是成功对象,将相应对象做数组处理:将旧数组拿出来展开,将新数组追加到后面
             .catch(err => console.error('添加失败', err))  //如果返回的是失败对象,就执行失败对象:显示失败信息
     }

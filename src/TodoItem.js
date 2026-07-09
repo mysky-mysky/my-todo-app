@@ -48,6 +48,8 @@ function TodoItem({task, onToggle, onDelete, onEdit}) {
                 [{task.category}]  {/*所属的分类*/}
             </span>
 
+            <span className="priority-badge">{task.priority}</span>
+
             <button onClick={onDelete}>删除</button>
         </li>
     );
