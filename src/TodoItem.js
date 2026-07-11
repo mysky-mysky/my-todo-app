@@ -50,6 +50,12 @@ function TodoItem({task, onToggle, onDelete, onEdit}) {
 
             <span className="priority-badge">{task.priority}</span>
 
+            {task.dueDate && (  //为true时执行
+                <span className="'due-date-badge">
+                    {new Date(task.dueDate).toLocaleDateString('zh-CN')}
+                </span>
+            )}
+
             <button onClick={onDelete}>删除</button>
         </li>
     );
