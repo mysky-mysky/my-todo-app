@@ -16,38 +16,45 @@ function TodoInput({onAdd}) {  //定义一个输入函数，接受一个回调�
 
     return (
         <form onSubmit={handleSubmit}>  {/*表单容器:点击添加后,执行onSubmit*/}
-            <input
-                type='text'  //初始化时执行,告诉浏览器:这里输入文本
-                placeholder="添加新任务..."  //初始化时执行,占位用的
-                onChange={(e) => setValue(e.target.value)}  //触发函数(事件的元素的值)
-                value={value}  //开始赋值
-            />
-            <label htmlFor="categorySelect">分类：</label>  {/*htmlFor用于键盘操作*/}
-            <select
-                id="categorySelect"
-                onChange={(e) => setCategory(e.target.value)} //触发函数(事件的元素的值)
-                value={category}  //开始赋值
-            >
-                <option value="工作">工作</option>
-                <option value="个人">个人</option>
-                <option value="学习">学习</option>
-            </select>
+            <div className="input-area">
+                <div className="input-row">
+                    <input
+                        id="taskInput"
+                        type='text'  //初始化时执行,告诉浏览器:这里输入文本
+                        placeholder="添加新任务..."  //初始化时执行,占位用的
+                        onChange={(e) => setValue(e.target.value)}  //触发函数(事件的元素的值)
+                        value={value}  //开始赋值
+                    />
+                </div>
 
-            <label>优先级: </label>
-            <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                <option value="高">高</option>
-                <option value="中">中</option>
-                <option value="低">低</option>
-            </select>
+                <label htmlFor="categorySelect">分类</label>  {/*htmlFor用于键盘操作*/}
+                <select
+                    id="categorySelect"
+                    onChange={(e) => setCategory(e.target.value)} //触发函数(事件的元素的值)
+                    value={category}  //开始赋值
+                >
+                    <option value="工作">工作</option>
+                    <option value="个人">个人</option>
+                    <option value="学习">学习</option>
+                </select>
 
-            <label>截止日期: </label>
-            <input
-                type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-            />
+                <label>优先级</label>
+                <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+                    <option value="高">高</option>
+                    <option value="中">中</option>
+                    <option value="低">低</option>
+                </select>
 
-            <button type="submit">添加</button>  {/*submit是执行添加行为*/}
+                <label>截止日期</label>
+                <input
+                    type="date"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                />
+
+                <button type="submit">添加</button>  {/*submit是执行添加行为*/}
+                
+            </div>
         </form>
     );
 }

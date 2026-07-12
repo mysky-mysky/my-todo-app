@@ -3,222 +3,328 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f1f3f4;
     padding: 30px 20px;
+    color: #202124;
 }
+
 .todo-app {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    padding: 30px;
+    max-width: 640px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    padding: 32px;
 }
+
 h1 {
     text-align: center;
-    color: #2c3e50;
-    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 28px;
+    color: #202124;
+    margin-bottom: 24px;
 }
+
 .input-area {
     display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
+    gap: 4px;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.input-area label {
+    font-size: 12px;
+    flex-shrink: 0;
+    margin: 0 2px;
+}
+.input-area select {
+    font-size: 12px;
+    padding: 4px 4px;
+    flex-shrink: 0;
+    max-width: 80px;
+}
+.input-area input[type="date"] { 
+    font-size: 12px; 
+    padding: 4px 4px; 
+    flex-shrink: 0; 
+    max-width: 130px;
+}
+.input-area #taskInput { 
+    font-size: 14px; 
+    padding: 6px 4px; 
+    flex: 1; 
+    min-width: 60px; 
+}
+.input-area #addBtn { 
+    flex-shrink: 0;
+    font-size: 14px; 
+    padding: 6px 14px; 
+    white-space: nowrap; 
 }
 .input-row {
     display: flex;
-    flex: 1;
-    gap: 10px;
+    flex: 0.5;
+    gap: 4px;
+    white-space: nowrap;
 }
 #taskInput {
     flex: 1;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    font-size: 16px;
+    padding: 8px 10px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f8f9fa;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
+
+#taskInput:focus {
+    border-color: #1a73e8;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+    background-color: #ffffff;
+}
+
 #addBtn {
-    background-color: #2c3e50;
+    background-color: #1a73e8;
     color: white;
     border: none;
-    padding: 0 25px;
-    border-radius: 10px;
+    padding: 0 24px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
 }
+
 #addBtn:hover {
-    background-color: #ffd700;
-    color: #2c3e50;
+    background-color: #1557b0;
 }
+
 #loadBtn {
-    background-color: #3498db;
-    color: white;
+    background-color: #e8eaed;
+    color: #202124;
     border: none;
     padding: 0 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    white-space: nowrap;
+    font-size: 14px;
+    transition: background-color 0.2s;
 }
+
 #loadBtn:hover {
-    background-color: #2950b9;
+    background-color: #d2d5d9;
 }
+
 #loadBtn:disabled {
-    background-color: #95a5a6;
+    opacity: 0.6;
     cursor: not-allowed;
-    opacity: 0.7;
 }
+
 #cleanAllBtn {
-    background-color: #e67e22;
-    color: white;
+    background-color: #e8eaed;
+    color: #202124;
     border: none;
     padding: 8px 20px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
+
 #cleanAllBtn:hover {
-    background-color: #d35400;
+    background-color: #d2d5d9;
 }
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.filter-buttons button {
+    padding: 6px 16px;
+    border: none;
+    background-color: #e8eaed;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s, color 0.2s;
+    color: #202124;
+}
+
 .filter-buttons button.active {
-    background-color: #2c3e50;
+    background-color: #1a73e8;
     color: white;
 }
-.catetgory-badge {
-    font-size: 12px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    background-color: #e0e0e0;
-    margin-left: 8px;
+
+.filter-buttons button:hover:not(.active) {
+    background-color: #d2d5d9;
 }
-.empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #999;
-}
+
 .task-list {
     list-style: none;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
-.task-text.completed {
-    text-decoration: line-through; /* 删除线 */
-    opacity: 0.7;  /* 透明度 */
-}
+
 .task-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
+    padding: 12px 16px;
+    background-color: #fafafa;
+    border-radius: 12px;
     margin-bottom: 8px;
-    transition: background-color 0.2s;
-    position: relative;
+    border: 1px solid #eee;
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
+
 .task-item:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f4f8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
+
 .task-checkbox {
     width: 20px;
     height: 20px;
     cursor: pointer;
 }
+
 .task-text {
     flex: 1;
     font-size: 16px;
-    cursor: pointer;  /* 提示可以双击编辑 */
+    cursor: pointer;
     padding: 4px 2px;
     border-radius: 6px;
     transition: background 0.1s;
 }
+
 .task-text:hover {
     background-color: #e9ecef;
 }
+
 .task-text.completed {
     text-decoration: line-through;
     color: #999;
 }
+
 .edit-input {
     flex: 1;
     font-size: 16px;
     padding: 6px 8px;
-    border: 2px solid #3498db;
+    border: 2px solid #1a73e8;
     border-radius: 8px;
     outline: none;
     font-family: inherit;
     background-color: white;
-    box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
 }
+
 .delete-btn {
-    background-color: #e74c3c;
+    background-color: #d93025;
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 4px 12px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 12px;
+    transition: background-color 0.2s;
     flex-shrink: 0;
 }
+
 .delete-btn:hover {
-    background-color: #c0392b;
+    background-color: #b3261e;
 }
+
+.category-badge,
+.priority-badge,
+.due-date-badge {
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.category-badge {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+}
+
+.priority-badge {
+    background-color: #fef7e0;
+    color: #e37400;
+}
+
+.due-date-badge {
+    background-color: #e6f4ea;
+    color: #1e8e3e;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 0;
+    color: #999;
+    font-size: 15px;
+}
+
 .stats {
     text-align: center;
-    padding-top: 15px;
-    border-top: 2px solid #eee;
-    color: #666;
-    font-weight: bold;
+    font-size: 14px;
+    color: #5f6368;
+    padding-top: 16px;
+    border-top: 1px solid #e8eaed;
 }
-.button-group {
-    display: flex;
-    gap: 10px;
-}
-@media (max-width: 500px) {
-    .input-area {flex-direction: column;}
-    .input-row {width: 100%;}
-    .button-group {width: 100%;}
-    #addBtn, #loadBtn {flex: 1; padding: 12px 0;}
-}
-/*进度条容器*/
+
 .progress-section {
     margin: 20px 0;
 }
+
 .progress-bar {
-    background-color: #e0e0e0;
+    background-color: #e8eaed;
     border-radius: 10px;
-    height: 10px;
+    height: 8px;
     overflow: hidden;
 }
+
 .progress-fill {
-    background-color: #4caf50;
+    background-color: #1a73e8;
     height: 100%;
     width: 0%;
     border-radius: 10px;
     transition: width 0.3s ease;
 }
+
 .progress-text {
-    text-align:center;
-    font-size: 12px;
-    margin-top: 5px;
-    color: #666;
+    text-align: center;
+    font-size: 13px;
+    margin-top: 4px;
+    color: #5f6368;
 }
-.priority-badge {
-    font-size: 12px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    background-color: #f0f0f0;
-    margin-left: 8px;
+
+.button-group {
+    display: flex;
+    gap: 10px;
 }
-.due-date-badge {
-    font-size: 12px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    background-color: #e8f0fe;
-    color: #1a73e8;
-    margin-left: 8px;
+
+@media (max-width: 500px) {
+    .input-area {
+        flex-direction: column;
+    }
+    .input-row {
+        width: 100%;
+    }
+    .button-group {
+        width: 100%;
+    }
+    #addBtn,
+    #loadBtn {
+        flex: 1;
+        padding: 12px 0;
+    }
+    .todo-app {
+        padding: 20px;
+        margin: 20px auto;
+    }
 }

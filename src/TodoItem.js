@@ -6,7 +6,7 @@ function TodoItem({task, onToggle, onDelete, onEdit}) {
 
     const handleSave = () => {  //声明一个'处理保存'功能的(函数式)变量
         if (editText.trim() === '') return;  //如果去掉首尾空格没内容,就退出
-        onEdit(task.id, editText);  //告诉父组件onEdit:将当前任务id的文字改为editText
+        onEdit(task._id, editText);  //告诉父组件onEdit:将当前任务id的文字改为editText
         setIsEditing(false);  //(重新)设置为不可编辑模式
     }
 
@@ -51,7 +51,7 @@ function TodoItem({task, onToggle, onDelete, onEdit}) {
             <span className="priority-badge">{task.priority}</span>
 
             {task.dueDate && (  //为true时执行
-                <span className="'due-date-badge">
+                <span className="due-date-badge">
                     {new Date(task.dueDate).toLocaleDateString('zh-CN')}
                 </span>
             )}
